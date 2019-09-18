@@ -1,0 +1,38 @@
+{
+  "name": "notes-api",
+  "version": "1.0.0",
+  "description": "note taking app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OtmaroE/notes-api.git"
+  },
+  "keywords": [
+    "notes",
+    "nodejs"
+  ],
+  "author": "Jose Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OtmaroE/notes-api/issues"
+  },
+  "homepage": "https://github.com/OtmaroE/notes-api#readme",
+  "dependencies": {
+    "express": "4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.15",
+    "nodemon": "^1.19.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.18.4",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "eslint": "6.4.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-import": "2.18.2"
+  }
+}

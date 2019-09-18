@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+  notes-api:
+    container_name: notes-api
+    restart: always
+    image: notes-api
+    build: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    links:
+      - postgres
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:10
+    ports:
+      - '5432:5432'
