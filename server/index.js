@@ -4,6 +4,7 @@ const logger = require('./services/logger');
 const folderRoutes = require('./routes/folder');
 const swaggerDocs = require('./routes/docs');
 const noteRoutes = require('./routes/note');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/', folderRoutes);
 app.use('/', swaggerDocs);
 app.use('/', noteRoutes);
+app.use('/', userRoutes);
 
 app.listen(port, () => logger.info(`App listening on port ${port}`));
 
