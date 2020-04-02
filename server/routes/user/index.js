@@ -7,50 +7,64 @@ const router = express.Router();
 
 /**
  * @swagger
- * definitions:
- *  User:
- *    properties:
- *      name:
- *        type: string
- *      userName:
- *        type: string
- *      email:
- *        type: string
- */
-
-/**
- * @swagger
  * /user:
  *   post:
- *     tags:
- *       - User
+ *     tags: ['User']
  *     description: Register an user
+ *     parameters:
+ *      - name: body
+ *        in: body
+ *        description: payload
+ *        required: true
+ *        type: object
+ *        schema:
+ *          properties:
+ *            name:
+ *              required: false
+ *              description: Full name of the user
+ *              type: string
+ *            userName:
+ *              required: true
+ *              description: Username of the user
+ *              type: string
+ *            password:
+ *              required: true
+ *              description: Non-restrictions password for the user
+ *              type: string
+ *            email:
+ *              required: true
+ *              description: unique user email
+ *              type: string
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: user created
- *         schema:
- *           $ref: '#/definitions/User'
  */
 router.post('/user', (_, res) => res.send('You tried to sing-up'));
 
 /**
  * @swagger
- * /user:
- *   post:
- *     tags:
- *       - User
- *     description: Register an user
+ * /user/login:
+ *   get:
+ *     tags: ["User"]
+ *     description: Login
+ *     parameters:
+ *      - name: email
+ *        in: query
+ *        required: true
+ *        type: string
+ *      - name: password
+ *        in: query
+ *        required: true
+ *        type: string
  *     produces:
- *       - application/json
+ *       - string
  *     responses:
  *       200:
  *         description: user created
- *         schema:
- *           $ref: '#/definitions/User'
  */
-router.get('/user/login/debug', (req, res) => {
+router.get('/user/login', (req, res) => {
   const debugUserData = {
     user: 'debug@debug.com',
     role: 'admin',
@@ -62,39 +76,28 @@ router.get('/user/login/debug', (req, res) => {
 
 /**
  * @swagger
- * /user:
- *   post:
- *     tags:
- *       - User
- *     description: Login
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: token
- *         schema:
- *           $ref: '#/definitions/User'
- */
-router.post('/login', auth, (req, res) => {
-  logger.info('Accessing "POST /login"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST /login');
-});
-
-/**
- * @swagger
- * /user:
+ * /user/:userId:
  *   get:
- *     tags:
- *       - User
+ *     tags: ["User"]
  *     description: Get profile information
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        required: true
+ *        type: integer
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: user resource
  *         schema:
- *           $ref: '#/definitions/User'
+ *           properties:
+ *            name:
+ *              type: string
+ *            username:
+ *              type: string
+ *            email:
+ *              type: string
  */
 router.get('/user/:id', (req, res) => {
   logger.info('Accessing "GET user/:id"');
@@ -104,39 +107,22 @@ router.get('/user/:id', (req, res) => {
 
 /**
  * @swagger
- * /user:
- *   get:
- *     tags:
- *       - User
- *     description: Update an user
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: user resource
- *         schema:
- *           $ref: '#/definitions/User'
- */
-router.put('/user/:id', (req, res) => {
-  logger.info('Accessing "POST user/:id/folder/:id/note"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST user/:id/folder/:id/note');
-});
-
-/**
- * @swagger
- * /user:
+ * /user/:userId:
  *   patch:
- *     tags:
- *       - User
+ *     tags: ["User"]
  *     description: Update an user
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: user resource
  *         schema:
- *           $ref: '#/definitions/User'
+ *          properties:
+ *           name:
+ *             type: string
+ *           username:
+ *             type: string
+ *           email:
+ *             type: string
  */
 router.patch('/user/:id', (req, res) => {
   logger.info('Accessing "POST user/:id/folder/:id/note"');
@@ -146,7 +132,7 @@ router.patch('/user/:id', (req, res) => {
 
 /**
  * @swagger
- * /user:
+ * /user/:userId:
  *   delete:
  *     tags:
  *       - User
@@ -156,7 +142,13 @@ router.patch('/user/:id', (req, res) => {
  *     responses:
  *       204:
  *         schema:
- *           $ref: '#/definitions/User'
+ *          properties:
+ *           name:
+ *             type: string
+ *           username:
+ *             type: string
+ *           email:
+ *             type: string
  */
 router.delete('/user/:id', (req, res) => {
   logger.info('Accessing "POST user/:id/folder/:id/note"');
