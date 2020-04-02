@@ -20,7 +20,7 @@ const options = {
   // import swaggerDefinitions
   swaggerDefinition,
   // path to the API docs
-  apis: ['./server/routes/folder/*.js'],
+  apis: ['./server/routes/folder/*.js', './server/routes/note/*.js'],
 };
 
 // initialize swagger-jsdoc

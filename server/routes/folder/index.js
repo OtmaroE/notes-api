@@ -27,7 +27,7 @@ const router = express.Router();
  *       - application/json
  *     responses:
  *       200:
- *         description: An array of puppies
+ *         description: folder resource created
  *         schema:
  *           $ref: '#/definitions/Folder'
  */
