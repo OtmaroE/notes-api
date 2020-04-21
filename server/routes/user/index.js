@@ -1,7 +1,10 @@
 const express = require('express');
+const createError = require('http-errors');
+
 const { createToken } = require('../../services/user/jwt');
 const auth = require('../../services/user/auth');
 const logger = require('../../services/logger');
+const { emailValidator, passwordValidator } = require('../../services/user/validations');
 
 const router = express.Router();
 
@@ -41,7 +44,16 @@ const router = express.Router();
  *       200:
  *         description: user created
  */
-router.post('/user', (_, res) => res.send('You tried to sing-up'));
+router.post('/user', (req, res) => {
+  const { email, password, userName } = req.body;
+  try {
+    emailValidator(email);
+    passwordValidator(password);
+  } catch (error) {
+    res.send(createError(error.message, 400));
+  }
+  logger.info('Attempting to create user');
+});
 
 /**
  * @swagger
