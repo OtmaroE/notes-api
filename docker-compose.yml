@@ -18,5 +18,9 @@ services:
     container_name: postgres
     restart: always
     image: postgres:10
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
     ports:
       - '5432:5432'
