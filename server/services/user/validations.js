@@ -20,9 +20,15 @@ const passwordValidator = (password) => {
   if (!password.length > 7) throw Error('password length must be at least 7 characters');
 };
 
+/**
+ * Basic password verifier
+ * TODO: We need to store passwords as hashed entities, this is just a placeholder
+ * @param {String} password plain text password entry
+ * @param {String} hashedPassword database hashed password from database
+ */
 const verifyPassword = (password, hashedPassword) => {
   if (password !== hashedPassword) throw Error('password is wrong');
-}
+};
 
 module.exports = {
   emailValidator,
