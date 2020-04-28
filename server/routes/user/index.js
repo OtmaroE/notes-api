@@ -4,7 +4,7 @@ const { createToken } = require('../../services/user/jwt');
 const db = require('../../database/models');
 const auth = require('../../services/user/auth');
 const logger = require('../../services/logger');
-const { emailValidator, passwordValidator } = require('../../services/user/validations');
+const { emailValidator, passwordValidator, verifyPassword } = require('../../services/user/validations');
 
 const router = express.Router();
 
@@ -85,14 +85,19 @@ router.post('/user', async (req, res) => {
  *       200:
  *         description: user created
  */
-router.get('/user/login', (req, res) => {
-  const debugUserData = {
-    user: 'debug@debug.com',
-    role: 'admin',
-    permissions: 'debug',
-  };
-  const token = createToken(debugUserData);
-  res.send(token);
+router.get('/user/login', async (req, res) => {
+  const { email, password } = req.query;
+  try {
+    logger.info('Attempting to fetch user data');
+    const user = await db.User.findOne({ where: { email }});
+    if (!user) throw Error('wrong email');
+    verifyPassword(password, user.password);
+    const token = createToken(user);
+    res.send(token, 200);
+  } catch (error) {
+    logger.error({ message: error.message, errors: error.errors });
+    res.send({ message: error.message, errors: error.errors }, 400);
+  }
 });
 
 /**

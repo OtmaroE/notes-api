@@ -20,7 +20,12 @@ const passwordValidator = (password) => {
   if (!password.length > 7) throw Error('password length must be at least 7 characters');
 };
 
+const verifyPassword = (password, hashedPassword) => {
+  if (password !== hashedPassword) throw Error('password is wrong');
+}
+
 module.exports = {
   emailValidator,
   passwordValidator,
+  verifyPassword,
 };
