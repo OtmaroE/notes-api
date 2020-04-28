@@ -89,7 +89,7 @@ router.post('/user/login', async (req, res) => {
   const { email, password } = req.query;
   try {
     logger.info('Attempting to fetch user data');
-    const user = await db.User.findOne({ where: { email } });
+    const user = await db.User.findOne({ where: { email, isDeleted: false } });
     if (!user) throw Error('wrong email');
     verifyPassword(password, user.password);
     const token = createToken({ email: user.email, id: user.id });
@@ -119,10 +119,25 @@ router.post('/user/login', async (req, res) => {
  *           email:
  *             type: string
  */
-router.patch('/user/:id', (req, res) => {
-  logger.info('Accessing "POST user/:id/folder/:id/note"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST user/:id/folder/:id/note');
+router.patch('/user/:id', async (req, res) => {
+  const { id } = req.params;
+  const { email, password, userName } = req.body;
+  try {
+    logger.info(`Verifying existence of user id ${id}`);
+    const user = await db.User.findByPk(id);
+    if (!user) {
+      logger.error(`User ${id} not found on database`);
+      throw Error('User does not exists');
+    }
+    logger.info(`Attempting to update user id ${id}`);
+    if (email) emailValidator(email);
+    if (password) passwordValidator(password);
+    await user.update({ email, password, userName });
+    res.send(204);
+  } catch (error) {
+    logger.error({ message: error.message, errors: error.errors });
+    res.send({ message: error.message, errors: error.errors }, 400);
+  }
 });
 
 /**
@@ -145,8 +160,19 @@ router.patch('/user/:id', (req, res) => {
  *           email:
  *             type: string
  */
-router.delete('/user/:id', (req, res) => {
-  logger.info('Accessing "POST user/:id/folder/:id/note"');
+router.delete('/user/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await db.User.findByPk(id);
+    if (user) {
+      await user.update({ isDeleted: true });
+      logger.info(`Attempting to sof-delete user id: ${user.id}`);
+    }
+    res.send(204);
+  } catch (error) {
+    logger.error({ message: error.message, errors: error.errors });
+    res.send({ message: error.message, errors: error.errors }, 400);
+  }
   logger.info(`user: ${req.user}`);
   res.send('You visited POST user/:id/folder/:id/note');
 });
