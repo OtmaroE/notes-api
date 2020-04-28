@@ -22,10 +22,6 @@ const router = express.Router();
  *        type: object
  *        schema:
  *          properties:
- *            name:
- *              required: false
- *              description: Full name of the user
- *              type: string
  *            userName:
  *              required: true
  *              description: Username of the user
@@ -67,7 +63,7 @@ router.post('/user', async (req, res) => {
 /**
  * @swagger
  * /user/login:
- *   get:
+ *   post:
  *     tags: ["User"]
  *     description: Login
  *     parameters:
@@ -102,10 +98,35 @@ router.post('/user/login', async (req, res) => {
 
 /**
  * @swagger
- * /user/:userId:
+ * /user/{userId}:
  *   patch:
  *     tags: ["User"]
  *     description: Update an user
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the resource to modify
+ *        required: true
+ *        type: integer
+ *      - name: body
+ *        in: body
+ *        description: payload
+ *        required: true
+ *        type: object
+ *        schema:
+ *          properties:
+ *            userName:
+ *              required: true
+ *              description: Username of the user
+ *              type: string
+ *            password:
+ *              required: true
+ *              description: Non-restrictions password for the user
+ *              type: string
+ *            email:
+ *              required: true
+ *              description: unique user email
+ *              type: string
  *     produces:
  *       - application/json
  *     responses:
@@ -142,11 +163,16 @@ router.patch('/user/:id', async (req, res) => {
 
 /**
  * @swagger
- * /user/:userId:
+ * /user/{userId}:
  *   delete:
- *     tags:
- *       - User
+ *     tags: ["User"]
  *     description: Delete an user
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the resource to modify
+ *        required: true
+ *        type: integer
  *     produces:
  *       - application/json
  *     responses:
