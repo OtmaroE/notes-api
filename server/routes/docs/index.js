@@ -11,7 +11,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Simple note taking app',
   },
-  host: 'localhost:3000',
+  host: 'localhost:3001',
   basePath: '/',
 };
 
