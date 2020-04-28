@@ -85,50 +85,19 @@ router.post('/user', async (req, res) => {
  *       200:
  *         description: user created
  */
-router.get('/user/login', async (req, res) => {
+router.post('/user/login', async (req, res) => {
   const { email, password } = req.query;
   try {
     logger.info('Attempting to fetch user data');
-    const user = await db.User.findOne({ where: { email }});
+    const user = await db.User.findOne({ where: { email } });
     if (!user) throw Error('wrong email');
     verifyPassword(password, user.password);
-    const token = createToken(user);
+    const token = createToken({ email: user.email, id: user.id });
     res.send(token, 200);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
     res.send({ message: error.message, errors: error.errors }, 400);
   }
-});
-
-/**
- * @swagger
- * /user/:userId:
- *   get:
- *     tags: ["User"]
- *     description: Get profile information
- *     parameters:
- *      - name: userId
- *        in: path
- *        required: true
- *        type: integer
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: user resource
- *         schema:
- *           properties:
- *            name:
- *              type: string
- *            username:
- *              type: string
- *            email:
- *              type: string
- */
-router.get('/user/:id', (req, res) => {
-  logger.info('Accessing "GET user/:id"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST user/:id/folder/:id/note');
 });
 
 /**

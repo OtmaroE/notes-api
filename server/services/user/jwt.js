@@ -8,7 +8,7 @@ const secret = process.env.SECRET || 'secret';
  * @param {Object} userData data to be encoded on jwt
  */
 function createToken(userData) {
-  const token = jwt.sign(userData, secret, { algorithm: 'HS384' });
+  const token = jwt.sign({ userData }, secret, { algorithm: 'HS384' });
   return token;
 }
 /**
