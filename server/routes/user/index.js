@@ -19,19 +19,18 @@ const router = express.Router();
  *        in: body
  *        description: payload
  *        required: true
- *        type: object
  *        schema:
  *          properties:
  *            userName:
- *              required: true
+ *              required: ['true']
  *              description: Username of the user
  *              type: string
  *            password:
- *              required: true
+ *              required: ['true']
  *              description: Non-restrictions password for the user
  *              type: string
  *            email:
- *              required: true
+ *              required: ['true']
  *              description: unique user email
  *              type: string
  *     produces:
@@ -102,6 +101,8 @@ router.post('/user/login', async (req, res) => {
  *   patch:
  *     tags: ["User"]
  *     description: Update an user
+ *     security:
+ *      - BearerAuth: []
  *     parameters:
  *      - name: userId
  *        in: path
@@ -112,25 +113,25 @@ router.post('/user/login', async (req, res) => {
  *        in: body
  *        description: payload
  *        required: true
- *        type: object
  *        schema:
  *          properties:
  *            userName:
- *              required: true
+ *              required: ['true']
  *              description: Username of the user
  *              type: string
  *            password:
- *              required: true
+ *              required: ['true']
  *              description: Non-restrictions password for the user
  *              type: string
  *            email:
- *              required: true
+ *              required: ['true']
  *              description: unique user email
  *              type: string
  *     produces:
  *       - application/json
  *     responses:
  *       200:
+ *         description: Resource
  *         schema:
  *          properties:
  *           name:
@@ -167,6 +168,8 @@ router.patch('/user/:id', async (req, res) => {
  *   delete:
  *     tags: ["User"]
  *     description: Delete an user
+ *     security:
+ *      - BearerAuth: []
  *     parameters:
  *      - name: userId
  *        in: path
@@ -177,14 +180,7 @@ router.patch('/user/:id', async (req, res) => {
  *       - application/json
  *     responses:
  *       204:
- *         schema:
- *          properties:
- *           name:
- *             type: string
- *           username:
- *             type: string
- *           email:
- *             type: string
+ *         description: If exists, the resource was deleted
  */
 router.delete('/user/:id', async (req, res) => {
   const { id } = req.params;
