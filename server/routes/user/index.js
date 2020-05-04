@@ -101,6 +101,8 @@ router.post('/user/login', async (req, res) => {
  *   patch:
  *     tags: ["User"]
  *     description: Update an user
+ *     security:
+ *      - BearerAuth: []
  *     parameters:
  *      - name: userId
  *        in: path
@@ -166,6 +168,8 @@ router.patch('/user/:id', async (req, res) => {
  *   delete:
  *     tags: ["User"]
  *     description: Delete an user
+ *     security:
+ *      - BearerAuth: []
  *     parameters:
  *      - name: userId
  *        in: path
