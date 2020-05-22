@@ -38,7 +38,7 @@ const router = express.Router();
  *     produces:
  *       - application/json
  *     responses:
- *       200:
+ *       201:
  *         description: user created
  */
 router.post('/user', auth, async (req, res) => {
@@ -114,24 +114,25 @@ router.post('/user/login', async (req, res) => {
  *        description: id of the resource to modify
  *        required: true
  *        type: integer
- *      - name: body
- *        in: body
+ *     requestBody:
  *        description: payload
  *        required: true
- *        schema:
- *          properties:
- *            userName:
- *              required: ['true']
- *              description: Username of the user
- *              type: string
- *            password:
- *              required: ['true']
- *              description: Non-restrictions password for the user
- *              type: string
- *            email:
- *              required: ['true']
- *              description: unique user email
- *              type: string
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                userName:
+ *                  required: ['true']
+ *                  description: Username of the user
+ *                  type: string
+ *                password:
+ *                  required: ['true']
+ *                  description: Non-restrictions password for the user
+ *                  type: string
+ *                email:
+ *                   required: ['true']
+ *                   description: unique user email
+ *                   type: string
  *     produces:
  *       - application/json
  *     responses:
