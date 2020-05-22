@@ -26,7 +26,7 @@ const options = {
   swaggerDefinition,
   // path to the API docs
   apis: [
-    // './server/routes/folder/*.js',
+    './server/routes/folder/*.js',
     // './server/routes/note/*.js',
     './server/routes/docs/components.yaml',
     './server/routes/user/*.js',

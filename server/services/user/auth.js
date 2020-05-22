@@ -20,7 +20,7 @@ function auth(req, res, next) {
     return res.status(401).send('Unauthorized');
   }
   logger.info(`User token generated for user: ${verifiedToken.userData.id}`);
-  req.user = verifiedToken;
+  req.user = verifiedToken.userData;
   next();
   return null;
 }
