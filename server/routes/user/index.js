@@ -186,7 +186,7 @@ router.patch('/user/:id', async (req, res) => {
  *       - application/json
  *     responses:
  *       204:
- *         description: If exists, the resource was deleted
+ *         description: If exists, the resource will be deleted
  */
 router.delete('/user/:id', auth, async (req, res) => {
   const { id } = req.params;
