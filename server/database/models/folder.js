@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       },
     },
+    isDeleted: DataTypes.BOOLEAN,
   }, {});
   Folder.associate = () => {
     // associations can be defined here
