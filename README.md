@@ -14,13 +14,13 @@ docker-compose up
 ```
 
 # Migrate the database
-On ./server/database/ run:
+On ./server/database/ inside the container run:
 ```
 npx sequelize-cli db:migrate
 ```
 
 # Seed the databaase
-On ./server/database/ run:
+On ./server/database/ inside the container run:
 ```
 npx sequelize-cli db:seed:all
 ```
