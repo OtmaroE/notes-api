@@ -9,11 +9,17 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - 3001:3001
+      - 3020:3020
+      - "9229:9229"
     volumes:
-      - .:/app
+      - .:/usr/src/app
     links:
       - postgres
+    mem_limit: 500M
+    command:
+      - nodemon
+      - "--inspect=0.0.0.0"
+      - "./server/index.js"
   postgres:
     container_name: postgres
     restart: always
@@ -23,4 +29,5 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     ports:
-      - '5432:5432'
+      - 5432:5432
+    mem_limit: 500M
