@@ -14,32 +14,34 @@ const router = express.Router();
  *   post:
  *     tags: ['User']
  *     description: Register an user
- *     parameters:
- *      - name: body
- *        in: body
- *        description: payload
+ *     security:
+ *      - BearerAuth: []
+ *     requestBody:
+ *        description: user record on JSON format
  *        required: true
- *        schema:
- *          properties:
- *            userName:
- *              required: ['true']
- *              description: Username of the user
- *              type: string
- *            password:
- *              required: ['true']
- *              description: Non-restrictions password for the user
- *              type: string
- *            email:
- *              required: ['true']
- *              description: unique user email
- *              type: string
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                userName:
+ *                  required: ['true']
+ *                  description: Username of the user
+ *                  type: string
+ *                password:
+ *                  required: ['true']
+ *                  description: Non-restrictions password for the user
+ *                  type: string
+ *                email:
+ *                  required: ['true']
+ *                  description: unique user email
+ *                  type: string
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: user created
  */
-router.post('/user', async (req, res) => {
+router.post('/user', auth, async (req, res) => {
   const { email, password, userName } = req.body;
   try {
     emailValidator(email);
@@ -51,6 +53,7 @@ router.post('/user', async (req, res) => {
       email,
       password,
       userName,
+      isDeleted: false,
     });
     res.send(userInstance, 201);
   } catch (error) {
@@ -69,11 +72,13 @@ router.post('/user', async (req, res) => {
  *      - name: email
  *        in: query
  *        required: true
- *        type: string
+ *        schema:
+ *          type: string
  *      - name: password
  *        in: query
  *        required: true
- *        type: string
+ *        schema:
+ *          type: string
  *     produces:
  *       - string
  *     responses:
@@ -182,7 +187,7 @@ router.patch('/user/:id', async (req, res) => {
  *       204:
  *         description: If exists, the resource was deleted
  */
-router.delete('/user/:id', async (req, res) => {
+router.delete('/user/:id', auth, async (req, res) => {
   const { id } = req.params;
   try {
     const user = await db.User.findByPk(id);
@@ -195,8 +200,6 @@ router.delete('/user/:id', async (req, res) => {
     logger.error({ message: error.message, errors: error.errors });
     res.send({ message: error.message, errors: error.errors }, 400);
   }
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST user/:id/folder/:id/note');
 });
 
 module.exports = router;

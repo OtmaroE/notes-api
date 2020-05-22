@@ -17,7 +17,11 @@ function createToken(userData) {
  */
 function verifyToken(token) {
   if (!token) return null;
-  const decodedToken = jwt.verify(token, secret, (err, decoded) => {
+  let filteredToken = token;
+  if (token.startsWith('Bearer') || token.startsWith('bearer')) {
+    [, filteredToken] = token.split(' ');
+  }
+  const decodedToken = jwt.verify(filteredToken, secret, (err, decoded) => {
     if (err) {
       logger.error(`token decoding failed: ${err}`);
       return null;
