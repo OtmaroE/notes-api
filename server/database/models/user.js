@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     isDeleted: DataTypes.BOOLEAN,
   }, {});
-  User.associate = (models) => {
+  User.associate = () => {
     // associations can be defined here
   };
   return User;
