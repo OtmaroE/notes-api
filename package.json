@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/OtmaroE/notes-api#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "4.17.1",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",

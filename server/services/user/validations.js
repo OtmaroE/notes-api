@@ -1,3 +1,5 @@
+const bcryptjs = require('bcryptjs');
+
 /**
  * Basic Email validator
  * @param {String} email represent the email
@@ -22,12 +24,12 @@ const passwordValidator = (password) => {
 
 /**
  * Basic password verifier
- * TODO: We need to store passwords as hashed entities, this is just a placeholder
  * @param {String} password plain text password entry
  * @param {String} hashedPassword database hashed password from database
  */
 const verifyPassword = (password, hashedPassword) => {
-  if (password !== hashedPassword) throw Error('password is wrong');
+  const isValidPassword = bcryptjs.compareSync(password, hashedPassword);
+  if (!isValidPassword) throw Error('password is wrong');
 };
 
 module.exports = {
