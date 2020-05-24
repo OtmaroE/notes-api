@@ -5,6 +5,7 @@ const db = require('../../database/models');
 const auth = require('../../services/user/auth');
 const logger = require('../../services/logger');
 const { emailValidator, passwordValidator, verifyPassword } = require('../../services/user/validations');
+const { encryptPassword } = require('../../services/user/encrypt');
 
 const router = express.Router();
 
@@ -47,15 +48,23 @@ router.post('/user', auth, async (req, res) => {
     emailValidator(email);
     passwordValidator(password);
     if (!userName) throw Error('userName is required');
-
+    const hashedPassword = encryptPassword(password);
     logger.info('Attempting to create user');
     const userInstance = await db.User.create({
       email,
-      password,
+      password: hashedPassword,
       userName,
       isDeleted: false,
     });
-    res.send(userInstance, 201);
+    logger.info(`User created: ${userInstance.id}`);
+    res.send(
+      {
+        id: userInstance.id,
+        email: userInstance.email,
+        userName: userInstance.userName,
+      },
+      201,
+    );
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
     res.send({ message: error.message, errors: error.errors }, 400);
