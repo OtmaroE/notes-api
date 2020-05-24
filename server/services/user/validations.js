@@ -24,7 +24,6 @@ const passwordValidator = (password) => {
 
 /**
  * Basic password verifier
- * TODO: We need to store passwords as hashed entities, this is just a placeholder
  * @param {String} password plain text password entry
  * @param {String} hashedPassword database hashed password from database
  */
