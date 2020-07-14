@@ -11,7 +11,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /user:
+ * /users:
  *   post:
  *     tags: ['User']
  *     description: Register an user
@@ -42,7 +42,7 @@ const router = express.Router();
  *       201:
  *         description: user created
  */
-router.post('/user', auth, async (req, res) => {
+router.post('/users', auth, async (req, res) => {
   const { email, password, userName } = req.body;
   try {
     emailValidator(email);
@@ -73,7 +73,7 @@ router.post('/user', auth, async (req, res) => {
 
 /**
  * @swagger
- * /user/login:
+ * /users/login:
  *   post:
  *     tags: ["User"]
  *     description: Login
@@ -94,7 +94,7 @@ router.post('/user', auth, async (req, res) => {
  *       200:
  *         description: user created
  */
-router.post('/user/login', async (req, res) => {
+router.post('/users/login', async (req, res) => {
   const { email, password } = req.query;
   try {
     logger.info('Attempting to fetch user data');
@@ -111,7 +111,7 @@ router.post('/user/login', async (req, res) => {
 
 /**
  * @swagger
- * /user/{userId}:
+ * /users/{userId}:
  *   patch:
  *     tags: ["User"]
  *     description: Update an user
@@ -156,7 +156,7 @@ router.post('/user/login', async (req, res) => {
  *           email:
  *             type: string
  */
-router.patch('/user/:id', async (req, res) => {
+router.patch('/users/:id', async (req, res) => {
   const { id } = req.params;
   const { email, password, userName } = req.body;
   try {
@@ -179,7 +179,7 @@ router.patch('/user/:id', async (req, res) => {
 
 /**
  * @swagger
- * /user/{userId}:
+ * /users/{userId}:
  *   delete:
  *     tags: ["User"]
  *     description: Delete an user
@@ -197,7 +197,7 @@ router.patch('/user/:id', async (req, res) => {
  *       204:
  *         description: If exists, the resource will be deleted
  */
-router.delete('/user/:id', auth, async (req, res) => {
+router.delete('/users/:id', auth, async (req, res) => {
   const { id } = req.params;
   try {
     const user = await db.User.findByPk(id);

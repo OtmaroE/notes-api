@@ -7,7 +7,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /user/{userId}/folder:
+ * /users/{userId}/folders:
  *   post:
  *     tags: ['Folder']
  *     description: Create a folder for a user
@@ -36,7 +36,7 @@ const router = express.Router();
  *       201:
  *         description: folder resource created
  */
-router.post('/user/:id/folder', auth, async (req, res) => {
+router.post('/users/:id/folders', auth, async (req, res) => {
   const { params: { id }, body: { name } } = req;
   try {
     if (!name) throw Error('name parameter must be provided');
@@ -58,7 +58,7 @@ router.post('/user/:id/folder', auth, async (req, res) => {
 
 /**
  * @swagger
- * /user/{userId}/folder:
+ * /users/{userId}/folders:
  *  get:
  *    tags: ['Folder']
  *    description: Return all the available folders for a user
@@ -76,7 +76,7 @@ router.post('/user/:id/folder', auth, async (req, res) => {
  *      200:
  *        description: Folder resources available
  */
-router.get('/user/:userId/folder', auth, async (req, res) => {
+router.get('/users/:userId/folders', auth, async (req, res) => {
   const { userId } = req.params;
   try {
     const user = await db.User.findByPk(userId);
@@ -93,7 +93,7 @@ router.get('/user/:userId/folder', auth, async (req, res) => {
 
 /**
  * @swagger
- * /user/{userId}/folder/{folderId}:
+ * /users/{userId}/folders/{folderId}:
  *   patch:
  *     tags: ['Folder']
  *     description: Update a folder's name
@@ -129,7 +129,7 @@ router.get('/user/:userId/folder', auth, async (req, res) => {
  *       404:
  *         description: Bad request
  */
-router.patch('/user/:userId/folder/:folderId', auth, async (req, res) => {
+router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
   const { params: { userId, folderId }, body: { name } } = req;
   try {
     const folder = await db.Folder.findByPk(folderId);
@@ -149,7 +149,7 @@ router.patch('/user/:userId/folder/:folderId', auth, async (req, res) => {
 
 /**
  * @swagger
- * /user/{userId}/folder/{folderId}:
+ * /users/{userId}/folders/{folderId}:
  *  delete:
  *    tags: ['Folder']
  *    description: Deletes a folder
@@ -172,7 +172,7 @@ router.patch('/user/:userId/folder/:folderId', auth, async (req, res) => {
  *      204:
  *        description: If exists, the resource will be deleted
  */
-router.delete('/user/:userId/folder/:folderId', auth, async (req, res) => {
+router.delete('/users/:userId/folders/:folderId', auth, async (req, res) => {
   const { userId, folderId } = req.params;
   try {
     const folder = await db.Folder.findByPk(folderId);

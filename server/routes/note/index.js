@@ -21,7 +21,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /user/:id/folder/:id/note:
+ * /users/:id/folders/:id/notes:
  *   post:
  *     tags:
  *       - Note
@@ -34,15 +34,15 @@ const router = express.Router();
  *         schema:
  *           $ref: '#/definitions/Note'
  */
-router.post('user/:id/folder/:id/note', auth, (req, res) => {
-  logger.info('Accessing "POST user/:id/folder/:id/note"');
+router.post('users/:id/folders/:id/note', auth, (req, res) => {
+  logger.info('Accessing "POST users/:id/folders/:id/notes"');
   logger.info(`user: ${req.user}`);
-  res.send('You visited POST user/:id/folder/:id/note');
+  res.send('You visited POST users/:id/folders/:id/notes');
 });
 
 /**
  * @swagger
- * /user/:id/folder/:id/note/:id:
+ * /users/:id/folders/:id/notes/:id:
  *   get:
  *     tags:
  *       - Note
@@ -55,15 +55,15 @@ router.post('user/:id/folder/:id/note', auth, (req, res) => {
  *         schema:
  *           $ref: '#/definitions/Note'
  */
-router.get('user/:id/folder/:id/note/:id', auth, (req, res) => {
-  logger.info('Accessing "GET user/:id/folder/:id/note/:id"');
+router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
+  logger.info('Accessing "GET users/:id/folders/:id/notes/:id"');
   logger.info(`user: ${req.user}`);
-  res.send('You visited GET user/:id/folder/:id/note/:id');
+  res.send('You visited GET users/:id/folders/:id/notes/:id');
 });
 
 /**
  * @swagger
- * /user/:id/folder/:id/note/:id:
+ * /users/:id/folders/:id/notes/:id:
  *   put:
  *     tags:
  *       - Note
@@ -76,7 +76,7 @@ router.get('user/:id/folder/:id/note/:id', auth, (req, res) => {
  *         schema:
  *           $ref: '#/definitions/Note'
  */
-router.put('user/:id/folder/:id/note/:id', auth, (req, res) => {
+router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "PUT user/:id/folder/:id/note/:id"');
   logger.info(`user: ${req.user}`);
   res.send('You visited PUT user/:id/folder/:id/note/:id');
@@ -84,7 +84,7 @@ router.put('user/:id/folder/:id/note/:id', auth, (req, res) => {
 
 /**
  * @swagger
- * /user/:id/folder/:id/note/:id:
+ * /users/:id/folders/:id/notes/:id:
  *   put:
  *     tags:
  *       - Note
@@ -97,15 +97,15 @@ router.put('user/:id/folder/:id/note/:id', auth, (req, res) => {
  *         schema:
  *           $ref: '#/definitions/Note'
  */
-router.patch('user/:id/folder/:id/note/:id', auth, (req, res) => {
-  logger.info('Accessing "PATCH user/:id/folder/:id/note/:id"');
+router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
+  logger.info('Accessing "PATCH users/:id/folders/:id/notes/:id"');
   logger.info(`user: ${req.user}`);
-  res.send('You visited PATCH user/:id/folder/:id/note/:id');
+  res.send('You visited PATCH users/:id/foldesr/:id/notes/:id');
 });
 
 /**
  * @swagger
- * /user/:id/folder/:id/note/:id:
+ * /users/:id/folders/:id/notes/:id:
  *   del:
  *     tags:
  *       - Note
@@ -117,10 +117,10 @@ router.patch('user/:id/folder/:id/note/:id', auth, (req, res) => {
  *         schema:
  *           $ref: '#/definitions/Note'
  */
-router.delete('user/:id/folder/:id/note/:id', auth, (req, res) => {
-  logger.info('Accessing "DELETE user/:id/folder/:id/note/:id"');
+router.delete('users/:id/folders/:id/notes/:id', auth, (req, res) => {
+  logger.info('Accessing "DELETE users/:id/folders/:id/notes/:id"');
   logger.info(`user: ${req.user}`);
-  res.send('You visited DELETE user/:id/folder/:id/note/:id');
+  res.send('You visited DELETE users/:id/folders/:id/notes/:id');
 });
 
 module.exports = router;
