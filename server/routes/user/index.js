@@ -212,4 +212,40 @@ router.delete('/users/:id', auth, async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/{userId}:
+ *   get:
+ *     tags: ["User"]
+ *     description: Fetch an user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the resource to modify
+ *        required: true
+ *        type: integer
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: If exists, the resource will be returned
+ */
+router.get('/users/:id', auth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (Number(id) !== Number(req.user.id)) {
+      throw Error('User not allowed to view for this resource');
+    }
+    logger.info(`Attempting to fetch user id: ${req.user.id}`);
+    const dbUser = await db.User.findOne({ where: { id }, attributes: ['id', 'email', 'userName'] });
+    delete dbUser.password;
+    res.send(dbUser);
+  } catch (error) {
+    logger.error({ message: error.message, errors: error.errors });
+    res.send({ message: error.message, errors: error.errors }, 400);
+  }
+});
+
 module.exports = router;
