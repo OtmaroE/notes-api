@@ -5,11 +5,14 @@ services:
     container_name: notes-api
     restart: always
     image: notes-api
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.local
     environment:
       NODE_ENV: development
+      SERVER_PORT:
     ports:
-      - 3020:3020
+      - "3020:3020"
       - "9229:9229"
     volumes:
       - .:/usr/src/app
@@ -29,5 +32,5 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     mem_limit: 500M

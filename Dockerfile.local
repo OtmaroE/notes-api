@@ -1,6 +1,7 @@
 FROM node:10.15-alpine
 
 ENV NODE_ENV development
+ENV SERVER_PORT=${SERVER_PORT}
 
 WORKDIR /usr/src/app
 
@@ -10,7 +11,7 @@ RUN npm install --development --silent && mv node_modules ../
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE SERVER_PORT
 
 RUN npm install -g nodemon
 

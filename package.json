@@ -4,7 +4,8 @@
   "description": "note taking app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -12,7 +13,8 @@
   },
   "keywords": [
     "notes",
-    "nodejs"
+    "nodejs",
+    "API"
   ],
   "author": "Jose Gonzalez",
   "license": "ISC",
