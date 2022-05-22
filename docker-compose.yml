@@ -9,13 +9,13 @@ services:
       context: .
       dockerfile: Dockerfile.local
     environment:
-      NODE_ENV: development
-      SERVER_PORT:
+      NODE_ENV: ${NODE_ENV}
+      SERVER_PORT: ${SERVER_PORT}
     ports:
-      - "3020:3020"
-      - "9229:9229"
+      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "${DEBUG_SERVER_PORT}:${DEBUG_SERVER_PORT}"
     volumes:
-      - .:/usr/src/app
+      - ./server:${WORKDIR}/server
     links:
       - postgres
     mem_limit: 500M
@@ -32,5 +32,5 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     mem_limit: 500M
