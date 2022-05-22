@@ -1,18 +1,27 @@
-FROM node:10.15-alpine
+# reference: https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
+FROM node:16
 
-ENV NODE_ENV development
-ENV SERVER_PORT=${SERVER_PORT}
+ARG NODE_ENV
+ARG SERVER_PORT
+ARG WORKDIR
 
-WORKDIR /usr/src/app
+# Create working directory
+WORKDIR $WORKDIR
 
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
-RUN npm install --development --silent && mv node_modules ../
+# If you are building your code for production
+# RUN npm ci --only=production
+RUN npm install --development
 
+# Bundle app source
 COPY . .
 
-EXPOSE SERVER_PORT
+EXPOSE $SERVER_PORT
 
 RUN npm install -g nodemon
 
-CMD ["nodemon", "./server/index.js"]
+CMD ["npm", "run", "dev"]

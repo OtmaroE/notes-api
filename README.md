@@ -20,9 +20,7 @@ If you wish, you can also deploy this API on a private server or build a UI for 
 - Postgres.
   - Version 10, the oldest version with pending minor releases as of 2022.
 - Docker
-  - TODO: Define which version has been used for testing.
 - Docker-compose
-  - TODO: Define which version has been used for testing.
 # Run:
 
 ### Run manually
