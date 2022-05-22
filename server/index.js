@@ -8,7 +8,7 @@ const swaggerDocs = require('./routes/docs');
 const noteRoutes = require('./routes/note');
 const userRoutes = require('./routes/user');
 
-const PORT = process.env.SERVER_PORT || 3020;
+const PORT = process.env.SERVER_PORT;
 const swaggerUiOptions = {
   swaggerOptions: {
     url: `http://localhost:${PORT}/swagger.json`,
@@ -24,6 +24,9 @@ app.use('/', swaggerDocs);
 app.use('/', noteRoutes);
 app.use('/', userRoutes);
 
-app.listen(PORT, () => logger.info(`App listening on port ${PORT}`));
+app.listen(PORT, () => {
+  logger.info(`App listening on port ${PORT}`);
+  logger.info(`Documentation can be found at: ${PORT}/api-docs`);
+});
 
 module.exports = app;
