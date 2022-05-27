@@ -18,7 +18,6 @@ services:
       - ./server:${WORKDIR}/server
     links:
       - postgres
-    mem_limit: 500M
     command:
       - nodemon
       - "--inspect=0.0.0.0"
@@ -33,4 +32,3 @@ services:
       PGDATA: /data/postgres
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-    mem_limit: 500M
