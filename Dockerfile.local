@@ -3,10 +3,9 @@ FROM node:16
 
 ARG NODE_ENV
 ARG SERVER_PORT
-ARG WORKDIR
 
 # Create working directory
-WORKDIR $WORKDIR
+WORKDIR /user/src/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -18,8 +17,7 @@ COPY package*.json ./
 RUN npm install --development
 
 # Bundle app source
-COPY . .
-
+COPY . /user/src/app
 EXPOSE $SERVER_PORT
 
 RUN npm install -g nodemon
