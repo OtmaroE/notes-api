@@ -11,6 +11,8 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       SERVER_PORT: ${SERVER_PORT}
+      DEBUG_SERVER_PORT: ${DEBUG_SERVER_PORT}
+      SWAGGER_URL: ${SWAGGER_URL}
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
       - "${DEBUG_SERVER_PORT}:${DEBUG_SERVER_PORT}"
