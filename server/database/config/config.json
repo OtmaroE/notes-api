@@ -3,9 +3,8 @@
     "username": "postgres",
     "password": "postgres",
     "database": "postgres",
-    "host": "postgres",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "host": "0.0.0.0",
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
