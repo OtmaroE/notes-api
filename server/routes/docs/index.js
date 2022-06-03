@@ -11,7 +11,7 @@ const swaggerDefinition = {
   info: {
     title: 'Notes API',
     version: '1.0.0',
-    description: 'Simple note taking app',
+    description: 'Note taking API',
   },
   host: `localhost:${PORT}`,
   basePath: '/',
@@ -27,7 +27,7 @@ const options = {
   // path to the API docs
   apis: [
     './server/routes/folder/*.js',
-    // './server/routes/note/*.js',
+    './server/routes/note/*.js',
     './server/routes/docs/components.yaml',
     './server/routes/user/*.js',
   ],
