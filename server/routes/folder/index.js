@@ -7,6 +7,19 @@ const router = express.Router();
 
 /**
  * @swagger
+ * definitions:
+ *  Folder:
+ *    properties:
+ *      name:
+ *        type: string
+ *      userId:
+ *        type: number
+ *      isDeleted:
+ *        type: boolean
+ */
+
+/**
+ * @swagger
  * /users/{userId}/folders:
  *   post:
  *     tags: ['Folder']
@@ -35,6 +48,12 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: folder resource created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Folder'
+ *       400:
+ *         description: error creating folder
  */
 router.post('/users/:id/folders', auth, async (req, res) => {
   const { params: { id }, body: { name } } = req;
@@ -75,6 +94,13 @@ router.post('/users/:id/folders', auth, async (req, res) => {
  *    responses:
  *      200:
  *        description: Folder resources available
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/definitions/Folder'
+ *                  
  */
 router.get('/users/:userId/folders', auth, async (req, res) => {
   const { userId } = req.params;
@@ -116,18 +142,20 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               properties:
- *                 name:
- *                   required: ['true']
- *                   description: New name for folder
- *                   type: string
+ *               $ref: '#/definitions/Folder'
  *     produces:
  *       - application/json
  *     responses:
- *       204:
- *         description: No content
+ *       200:
+ *         description: Entity updated successfully
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/Folder'
  *       404:
- *         description: Bad request
+ *         description: resource not found
+ *       400:
+ *         description: malformatted input
  */
 router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
   const { params: { userId, folderId }, body: { name } } = req;
