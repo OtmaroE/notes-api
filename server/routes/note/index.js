@@ -21,18 +21,39 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users/:id/folders/:id/notes:
+ * /users/{userId}/folders/{folderId}/notes:
  *   post:
- *     tags:
- *       - Note
+ *     tags: ['Note']
  *     description: Create a note for a user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the user
+ *        required: true
+ *        type: integer
+ *      - name: folderId
+ *        in: path
+ *        description: id of the folder
+ *        required: true
+ *        type: integer
+ *     requestBody:
+ *      description: note record on JSON format
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/definitions/Note'
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: note resource created
- *         schema:
- *           $ref: '#/definitions/Note'
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/Note'
  */
 router.post('users/:id/folders/:id/note', auth, (req, res) => {
   logger.info('Accessing "POST users/:id/folders/:id/notes"');
@@ -42,18 +63,35 @@ router.post('users/:id/folders/:id/note', auth, (req, res) => {
 
 /**
  * @swagger
- * /users/:id/folders/:id/notes/:id:
+ * /users/{userId}/folders/{folderId}/notes/{noteId}:
  *   get:
- *     tags:
- *       - Note
+ *     tags: ['Note']
  *     description: Get a note for a user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the user
+ *        required: true
+ *        type: integer
+ *      - name: folderId
+ *        in: path
+ *        description: id of the folder
+ *        type: integer
+ *      - name: noteId
+ *        in: path
+ *        description: if of the note
+ *        type: integer
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: note resource
- *         schema:
- *           $ref: '#/definitions/Note'
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/Note'
  */
 router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "GET users/:id/folders/:id/notes/:id"');
@@ -63,18 +101,44 @@ router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
 
 /**
  * @swagger
- * /users/:id/folders/:id/notes/:id:
+ * /users/{userId}/folders/{folderId}/notes/{noteId}:
  *   put:
- *     tags:
- *       - Note
+ *     tags: ['Note']
  *     description: Update a note for a user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the user
+ *        required: true
+ *        type: integer
+ *      - name: folderId
+ *        in: path
+ *        description: id of the folder
+ *        required: true
+ *        type: integer
+ *      - name: noteId
+ *        in: path
+ *        description: id of the note
+ *        required: true
+ *        type: integer
+ *     requestBody:
+ *      description: note record on JSON format to update
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/definitions/Note'
  *     produces:
  *       - application/json
  *     responses:
  *       200:
  *         description: note resource
- *         schema:
- *           $ref: '#/definitions/Note'
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/Note'
  */
 router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "PUT user/:id/folder/:id/note/:id"');
@@ -84,18 +148,39 @@ router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
 
 /**
  * @swagger
- * /users/:id/folders/:id/notes/:id:
- *   put:
- *     tags:
- *       - Note
+ * /users/{userId}/folders/{folderId}/notes/{noteId}:
+ *   patch:
+ *     tags: ['Note']
  *     description: Update a note for a user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the user
+ *        required: true
+ *        type: integer
+ *      - name: folderId
+ *        in: path
+ *        description: id of the folder
+ *        required: true
+ *        type: integer
+ *     requestBody:
+ *      description: note record on JSON format
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/definitions/Note'
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: note resource
- *         schema:
- *           $ref: '#/definitions/Note'
+ *         description: note resource updated
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/Note'
  */
 router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "PATCH users/:id/folders/:id/notes/:id"');
@@ -105,17 +190,28 @@ router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
 
 /**
  * @swagger
- * /users/:id/folders/:id/notes/:id:
- *   del:
- *     tags:
- *       - Note
+ * /users/{userId}/folders/{folderId}/notes/{noteId}:
+ *   delete:
+ *     tags: ['Note']
  *     description: Delete a note for a user
+ *     security:
+ *      - BearerAuth: []
+ *     parameters:
+ *      - name: userId
+ *        in: path
+ *        description: id of the user
+ *        required: true
+ *        type: integer
+ *      - name: folderId
+ *        in: path
+ *        description: id of the folder
+ *        required: true
+ *        type: integer
  *     produces:
  *       - application/json
  *     responses:
  *       204:
- *         schema:
- *           $ref: '#/definitions/Note'
+ *        description: if note exists, note will be deleted
  */
 router.delete('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "DELETE users/:id/folders/:id/notes/:id"');
