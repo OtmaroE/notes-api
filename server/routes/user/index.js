@@ -11,6 +11,23 @@ const router = express.Router();
 
 /**
  * @swagger
+ * definitions:
+ *  User:
+ *    properties:
+ *      name:
+ *        type: string
+ *      email:
+ *        type: string
+ *      isDeleted:
+ *        type: boolean
+ *      createdAt:
+ *        type: date
+ *      updatedAt:
+ *        type: date
+ */
+
+/**
+ * @swagger
  * /users:
  *   post:
  *     tags: ['User']
@@ -18,29 +35,21 @@ const router = express.Router();
  *     security:
  *      - BearerAuth: []
  *     requestBody:
- *        description: user record on JSON format
+ *        description: User record on JSON format
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              properties:
- *                userName:
- *                  required: ['true']
- *                  description: Username of the user
- *                  type: string
- *                password:
- *                  required: ['true']
- *                  description: Non-restrictions password for the user
- *                  type: string
- *                email:
- *                  required: ['true']
- *                  description: unique user email
- *                  type: string
+ *              $ref: '#/definitions/User'
  *     produces:
  *       - application/json
  *     responses:
  *       201:
- *         description: user created
+ *         description: User created
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/User'
  */
 router.post('/users', auth, async (req, res) => {
   const { email, password, userName } = req.body;
@@ -91,8 +100,8 @@ router.post('/users', auth, async (req, res) => {
  *     produces:
  *       - string
  *     responses:
- *       200:
- *         description: user created
+ *       201:
+ *         description: Token is returned
  */
 router.post('/users/login', async (req, res) => {
   const { email, password } = req.query;
@@ -124,37 +133,21 @@ router.post('/users/login', async (req, res) => {
  *        required: true
  *        type: integer
  *     requestBody:
- *        description: payload
+ *        description: Payload
  *        required: true
  *        content:
  *          application/json:
  *            schema:
- *              properties:
- *                userName:
- *                  required: ['true']
- *                  description: Username of the user
- *                  type: string
- *                password:
- *                  required: ['true']
- *                  description: Non-restrictions password for the user
- *                  type: string
- *                email:
- *                   required: ['true']
- *                   description: unique user email
- *                   type: string
+ *              $ref: '#/definitions/User'
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: Resource
- *         schema:
- *          properties:
- *           name:
- *             type: string
- *           username:
- *             type: string
- *           email:
- *             type: string
+ *         description: Updated resource
+ *         content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/definitions/User'
  */
 router.patch('/users/:id', async (req, res) => {
   const { id } = req.params;
@@ -223,7 +216,7 @@ router.delete('/users/:id', auth, async (req, res) => {
  *     parameters:
  *      - name: userId
  *        in: path
- *        description: id of the resource to modify
+ *        description: id of the resource to delete
  *        required: true
  *        type: integer
  *     produces:
