@@ -39,7 +39,7 @@ const router = express.Router();
  *        required: true
  *        type: integer
  *     requestBody:
- *      description: note record on JSON format
+ *      description: Note record on JSON format
  *      required: true
  *      content:
  *        application/json:
@@ -49,7 +49,7 @@ const router = express.Router();
  *       - application/json
  *     responses:
  *       200:
- *         description: note resource created
+ *         description: Note resource created
  *         content:
  *          application/json:
  *            schema:
@@ -87,7 +87,7 @@ router.post('users/:id/folders/:id/note', auth, (req, res) => {
  *       - application/json
  *     responses:
  *       200:
- *         description: note resource
+ *         description: Note resource
  *         content:
  *          application/json:
  *            schema:
@@ -124,7 +124,7 @@ router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *        required: true
  *        type: integer
  *     requestBody:
- *      description: note record on JSON format to update
+ *      description: Note record on JSON format to update
  *      required: true
  *      content:
  *        application/json:
@@ -134,7 +134,7 @@ router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *       - application/json
  *     responses:
  *       200:
- *         description: note resource
+ *         description: Note resource
  *         content:
  *          application/json:
  *            schema:
@@ -166,7 +166,7 @@ router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *        required: true
  *        type: integer
  *     requestBody:
- *      description: note record on JSON format
+ *      description: Note record on JSON format
  *      required: true
  *      content:
  *        application/json:
@@ -176,7 +176,7 @@ router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *       - application/json
  *     responses:
  *       200:
- *         description: note resource updated
+ *         description: Note resource updated
  *         content:
  *          application/json:
  *            schema:
@@ -211,7 +211,7 @@ router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *       - application/json
  *     responses:
  *       204:
- *        description: if note exists, note will be deleted
+ *        description: If note exists, note will be deleted
  */
 router.delete('users/:id/folders/:id/notes/:id', auth, (req, res) => {
   logger.info('Accessing "DELETE users/:id/folders/:id/notes/:id"');

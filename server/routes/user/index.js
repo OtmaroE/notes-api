@@ -35,7 +35,7 @@ const router = express.Router();
  *     security:
  *      - BearerAuth: []
  *     requestBody:
- *        description: user record on JSON format
+ *        description: User record on JSON format
  *        required: true
  *        content:
  *          application/json:
@@ -45,7 +45,7 @@ const router = express.Router();
  *       - application/json
  *     responses:
  *       201:
- *         description: user created
+ *         description: User created
  *         content:
  *          application/json:
  *            schema:
@@ -101,7 +101,7 @@ router.post('/users', auth, async (req, res) => {
  *       - string
  *     responses:
  *       201:
- *         description: token is returned
+ *         description: Token is returned
  */
 router.post('/users/login', async (req, res) => {
   const { email, password } = req.query;
@@ -133,7 +133,7 @@ router.post('/users/login', async (req, res) => {
  *        required: true
  *        type: integer
  *     requestBody:
- *        description: payload
+ *        description: Payload
  *        required: true
  *        content:
  *          application/json:
@@ -216,7 +216,7 @@ router.delete('/users/:id', auth, async (req, res) => {
  *     parameters:
  *      - name: userId
  *        in: path
- *        description: id of the resource to modify
+ *        description: id of the resource to delete
  *        required: true
  *        type: integer
  *     produces:

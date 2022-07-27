@@ -33,7 +33,7 @@ const router = express.Router();
  *        required: true
  *        type: integer
  *     requestBody:
- *       description: folder record on JSON format
+ *       description: Folder record on JSON format
  *       required: true
  *       content:
  *        application/json:
@@ -47,13 +47,13 @@ const router = express.Router();
  *       - application/json
  *     responses:
  *       201:
- *         description: folder resource created
+ *         description: Folder resource created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/Folder'
  *       400:
- *         description: error creating folder
+ *         description: Error creating folder
  */
 router.post('/users/:id/folders', auth, async (req, res) => {
   const { params: { id }, body: { name } } = req;
@@ -153,9 +153,9 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *            schema:
  *              $ref: '#/definitions/Folder'
  *       404:
- *         description: resource not found
+ *         description: Resource not found
  *       400:
- *         description: malformatted input
+ *         description: Malformatted input
  */
 router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
   const { params: { userId, folderId }, body: { name } } = req;
