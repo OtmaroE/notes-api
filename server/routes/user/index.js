@@ -21,9 +21,17 @@ const router = express.Router();
  *      isDeleted:
  *        type: boolean
  *      createdAt:
- *        type: date
+ *        type: string
  *      updatedAt:
- *        type: date
+ *        type: string
+ *  User-INPUT:
+ *     properties:
+ *      name:
+ *        type: string
+ *      email:
+ *        type: string
+ *      isDeleted:
+ *        type: boolean
  */
 
 /**
@@ -40,7 +48,7 @@ const router = express.Router();
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/definitions/User'
+ *              $ref: '#/definitions/User-INPUT'
  *     produces:
  *       - application/json
  *     responses:
@@ -138,7 +146,7 @@ router.post('/users/login', async (req, res) => {
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/definitions/User'
+ *              $ref: '#/definitions/User-INPUT'
  *     produces:
  *       - application/json
  *     responses:
