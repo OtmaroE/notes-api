@@ -17,6 +17,14 @@ const router = express.Router();
  *        type: string
  *      folderId:
  *        type: integer
+ *  Note-INPUT:
+ *    properties:
+ *      name:
+ *        type: string
+ *      content:
+ *        type: string
+ *      color:
+ *        type: string
  */
 
 /**
@@ -44,7 +52,7 @@ const router = express.Router();
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/definitions/Note'
+ *            $ref: '#/definitions/Note-INPUT'
  *     produces:
  *       - application/json
  *     responses:
@@ -129,7 +137,7 @@ router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/definitions/Note'
+ *            $ref: '#/definitions/Note-INPUT'
  *     produces:
  *       - application/json
  *     responses:
@@ -171,7 +179,7 @@ router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/definitions/Note'
+ *            $ref: '#/definitions/Note-INPUT'
  *     produces:
  *       - application/json
  *     responses:

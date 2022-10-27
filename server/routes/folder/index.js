@@ -16,6 +16,12 @@ const router = express.Router();
  *        type: number
  *      isDeleted:
  *        type: boolean
+ *  Folder-INPUT:
+ *    properties:
+ *      name:
+ *        type: string
+ *      isDeleted:
+ *        type: boolean
  */
 
 /**
@@ -100,7 +106,6 @@ router.post('/users/:id/folders', auth, async (req, res) => {
  *              type: array
  *              items:
  *                $ref: '#/definitions/Folder'
- *                  
  */
 router.get('/users/:userId/folders', auth, async (req, res) => {
   const { userId } = req.params;
@@ -142,7 +147,7 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/definitions/Folder'
+ *               $ref: '#/definitions/Folder-PUT'
  *     produces:
  *       - application/json
  *     responses:
@@ -151,7 +156,7 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *          application/json:
  *            schema:
- *              $ref: '#/definitions/Folder'
+ *              $ref: '#/definitions/Folder-INPUT'
  *       404:
  *         description: Resource not found
  *       400:
