@@ -16,7 +16,7 @@ const router = express.Router();
  *        type: number
  *      isDeleted:
  *        type: boolean
- *  Folder-PUT:
+ *  Folder-INPUT:
  *    properties:
  *      name:
  *        type: string
@@ -156,7 +156,7 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *          application/json:
  *            schema:
- *              $ref: '#/definitions/Folder-PUT'
+ *              $ref: '#/definitions/Folder-INPUT'
  *       404:
  *         description: Resource not found
  *       400:
