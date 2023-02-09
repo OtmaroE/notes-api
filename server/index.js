@@ -8,8 +8,7 @@ const swaggerDocs = require('./routes/docs');
 const noteRoutes = require('./routes/note');
 const userRoutes = require('./routes/user');
 
-const PORT = process.env.SERVER_PORT;
-const SWAGGER_URL = process.env.SWAGGER_URL;
+const { SWAGGER_URL, PORT } = process.env;
 
 const swaggerUiOptions = {
   swaggerOptions: {
