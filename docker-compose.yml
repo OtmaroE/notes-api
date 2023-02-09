@@ -8,11 +8,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      SERVER_PORT: ${SERVER_PORT}
-      DEBUG_SERVER_PORT: ${DEBUG_SERVER_PORT}
-      SWAGGER_URL: ${SWAGGER_URL}
+    env_file:
+      - .env
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
       - "${DEBUG_SERVER_PORT}:${DEBUG_SERVER_PORT}"
