@@ -11,7 +11,7 @@ const logger = require('../logger');
 function auth(req, res, next) {
   const { headers: { authorization } = {} } = req;
   if (!authorization) {
-    logger.debug('No authorization header provided, returning 400');
+    logger.debug('No authorization header provided, returning 401');
     return res.status(401).send('Unauthorized');
   }
   const verifiedToken = verifyToken(authorization);
@@ -19,7 +19,7 @@ function auth(req, res, next) {
     logger.debug('Bad token format, returning 401');
     return res.status(401).send('Unauthorized');
   }
-  logger.info(`User token generated for user: ${verifiedToken.userData.id}`);
+  logger.info(`User token verified for user: ${verifiedToken.userData.id}`);
   req.user = verifiedToken.userData;
   next();
   return null;
