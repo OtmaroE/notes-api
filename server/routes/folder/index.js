@@ -16,28 +16,20 @@ const router = express.Router();
  *        type: number
  *      isDeleted:
  *        type: boolean
- *  Folder-INPUT:
+ *  FolderPUT:
  *    properties:
  *      name:
  *        type: string
- *      isDeleted:
- *        type: boolean
  */
 
 /**
  * @swagger
- * /users/{userId}/folders:
+ * /users/me/folders:
  *   post:
  *     tags: ['Folder']
  *     description: Create a folder for a user
  *     security:
  *      - BearerAuth: []
- *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *     requestBody:
  *       description: Folder record on JSON format
  *       required: true
@@ -61,8 +53,8 @@ const router = express.Router();
  *       400:
  *         description: Error creating folder
  */
-router.post('/users/:id/folders', auth, async (req, res) => {
-  const { params: { id }, body: { name } } = req;
+router.post('/users/me/folders', auth, async (req, res) => {
+  const { user: { id } = {}, body: { name } } = req;
   try {
     if (!name) throw Error('name parameter must be provided');
 
@@ -83,18 +75,12 @@ router.post('/users/:id/folders', auth, async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}/folders:
+ * /users/me/folders:
  *  get:
  *    tags: ['Folder']
  *    description: Return all the available folders for a user
  *    security:
  *      - BearerAuth: []
- *    parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *    produces:
  *      - application/json
  *    responses:
@@ -107,13 +93,9 @@ router.post('/users/:id/folders', auth, async (req, res) => {
  *              items:
  *                $ref: '#/definitions/Folder'
  */
-router.get('/users/:userId/folders', auth, async (req, res) => {
-  const { userId } = req.params;
+router.get('/users/me/folders', auth, async (req, res) => {
+  const { user: { id: userId } = {} } = req;
   try {
-    const user = await db.User.findByPk(userId);
-    if (!user) throw Error('User does not exists');
-
-    if (user.id !== req.user.id) throw Error('User not allowed to ask for this resource');
     const folders = await db.Folder.findAll({ where: { userId, isDeleted: false } });
     res.send(folders, 200);
   } catch (error) {
@@ -124,18 +106,13 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}:
+ * /users/me/folders/{folderId}:
  *   patch:
  *     tags: ['Folder']
  *     description: Update a folder's name
  *     security:
  *       - BearerAuth: []
  *     parameters:
- *       - name: userId
- *         in: path
- *         description: id of the user
- *         required: true
- *         type: integer
  *       - name: folderId
  *         in: path
  *         description: id of the folder
@@ -147,7 +124,7 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/definitions/Folder-PUT'
+ *               $ref: '#/definitions/FolderPUT'
  *     produces:
  *       - application/json
  *     responses:
@@ -156,24 +133,24 @@ router.get('/users/:userId/folders', auth, async (req, res) => {
  *         content:
  *          application/json:
  *            schema:
- *              $ref: '#/definitions/Folder-INPUT'
+ *              $ref: '#/definitions/Folder'
  *       404:
  *         description: Resource not found
  *       400:
  *         description: Malformatted input
  */
-router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
-  const { params: { userId, folderId }, body: { name } } = req;
+router.patch('/users/me/folders/:folderId', auth, async (req, res) => {
+  const { params: { folderId }, user: { id: userId } = {}, body: { name } } = req;
   try {
     const folder = await db.Folder.findByPk(folderId);
     if (!folder) throw Error('Resource does not exists');
 
     // TODO: admins will eventually have power over other's resources
-    if (folder.userId !== req.user.id || folder.userId !== Number(userId)) {
+    if (folder.userId !== userId) {
       throw Error('User not allowed to modify for this resource');
     }
-    await folder.update({ name });
-    res.send(204);
+    const updatedFolder = await folder.update({ name });
+    res.send(updatedFolder, 200);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
     res.send({ message: error.message, errors: error.errors }, 400);
@@ -182,18 +159,13 @@ router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}:
+ * /users/me/folders/{folderId}:
  *  delete:
  *    tags: ['Folder']
  *    description: Deletes a folder
  *    security:
  *      - BearerAuth: []
  *    parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *      - name: folderId
  *        in: path
  *        description: id of the folder
@@ -206,12 +178,12 @@ router.patch('/users/:userId/folders/:folderId', auth, async (req, res) => {
  *        description: If exists, the resource will be deleted
  */
 router.delete('/users/:userId/folders/:folderId', auth, async (req, res) => {
-  const { userId, folderId } = req.params;
+  const { user: { id: userId } = {}, params: { folderId } } = req;
   try {
     const folder = await db.Folder.findByPk(folderId);
     if (!folder) throw Error('Resource does not exits');
 
-    if (folder.userId !== req.user.id || folder.userId !== Number(userId)) {
+    if (folder.userId !== userId) {
       throw Error('User not allowed to modify for this resource');
     }
 
