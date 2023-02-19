@@ -1,4 +1,5 @@
 const express = require('express');
+const db = require('../../database/models');
 const logger = require('../../services/logger');
 const auth = require('../../services/user/auth');
 
@@ -29,18 +30,13 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}/notes:
+ * /users/me/folders/{folderId}/notes:
  *   post:
  *     tags: ['Note']
  *     description: Create a note for a user
  *     security:
  *      - BearerAuth: []
  *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *      - name: folderId
  *        in: path
  *        description: id of the folder
@@ -63,26 +59,38 @@ const router = express.Router();
  *            schema:
  *              $ref: '#/definitions/Note'
  */
-router.post('users/:id/folders/:id/note', auth, (req, res) => {
-  logger.info('Accessing "POST users/:id/folders/:id/notes"');
+router.post('/users/me/folders/:id/note', auth, async (req, res) => {
+  const { params: { folderId }, user: { id: userId } = {}, body } = req;
+  try {
+    const folder = await db.Folder.findByPk(folderId);
+    if (!folder || (folder.userId !== userId)) {
+      throw Error('Folder provided does not exist for user');
+    }
+    const note = await db.Note.create({
+      name: body.name,
+      content: body.content,
+      folderId: folder.id,
+      userId,
+      isDeleted: false,
+    });
+    res.send(note, 201);
+  } catch (error) {
+    logger.error(error);
+    res.send({ message: `Failure to add note: ${error.message}` }, 400);
+  }
   logger.info(`user: ${req.user}`);
   res.send('You visited POST users/:id/folders/:id/notes');
 });
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}/notes/{noteId}:
+ * /users/me/folders/{folderId}/notes/{noteId}:
  *   get:
  *     tags: ['Note']
  *     description: Get a note for a user
  *     security:
  *      - BearerAuth: []
  *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *      - name: folderId
  *        in: path
  *        description: id of the folder
@@ -101,15 +109,22 @@ router.post('users/:id/folders/:id/note', auth, (req, res) => {
  *            schema:
  *              $ref: '#/definitions/Note'
  */
-router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
-  logger.info('Accessing "GET users/:id/folders/:id/notes/:id"');
+router.get('/users/me/folders/:id/notes/:id', auth, async (req, res) => {
+  const { user: { id: userId } = {} } = req;
+  try {
+    const notes = await db.Note.findAll({ where: { userId, isDeleted: false } });
+    res.send(notes, 200);
+  } catch (error) {
+    logger.error(error);
+    res.send([], 200);
+  }
   logger.info(`user: ${req.user}`);
   res.send('You visited GET users/:id/folders/:id/notes/:id');
 });
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}/notes/{noteId}:
+ * /users/me/folders/{folderId}/notes/{noteId}:
  *   put:
  *     tags: ['Note']
  *     description: Update a note for a user
@@ -148,68 +163,36 @@ router.get('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *            schema:
  *              $ref: '#/definitions/Note'
  */
-router.put('users/:id/folders/:id/notes/:id', auth, (req, res) => {
-  logger.info('Accessing "PUT user/:id/folder/:id/note/:id"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited PUT user/:id/folder/:id/note/:id');
+router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
+  const { params: { folderId }, user: { id: userId } = {}, body = {} } = req;
+  try {
+    const note = await db.Note.findByPk(folderId);
+    if (note.userId !== userId) {
+      throw Error('User is not the owner of the note');
+    }
+    if (note.foldeId !== folderId) {
+      throw Error('Note does not belong to provided folder');
+    }
+    const updatedNote = await note.update({
+      name: body.name ? body.name : note.name,
+      content: body.content ? body.content : note.content,
+    });
+    res.send(updatedNote, 201);
+  } catch (error) {
+    logger.error(error);
+    res.send({ message: `Failure to add note: ${error.message}` }, 400);
+  }
 });
 
 /**
  * @swagger
- * /users/{userId}/folders/{folderId}/notes/{noteId}:
- *   patch:
- *     tags: ['Note']
- *     description: Update a note for a user
- *     security:
- *      - BearerAuth: []
- *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
- *      - name: folderId
- *        in: path
- *        description: id of the folder
- *        required: true
- *        type: integer
- *     requestBody:
- *      description: Note record on JSON format
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/definitions/Note-INPUT'
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Note resource updated
- *         content:
- *          application/json:
- *            schema:
- *              $ref: '#/definitions/Note'
- */
-router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
-  logger.info('Accessing "PATCH users/:id/folders/:id/notes/:id"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited PATCH users/:id/foldesr/:id/notes/:id');
-});
-
-/**
- * @swagger
- * /users/{userId}/folders/{folderId}/notes/{noteId}:
+ * /users/me/folders/{folderId}/notes/{noteId}:
  *   delete:
  *     tags: ['Note']
  *     description: Delete a note for a user
  *     security:
  *      - BearerAuth: []
  *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *      - name: folderId
  *        in: path
  *        description: id of the folder
@@ -221,10 +204,22 @@ router.patch('users/:id/folders/:id/notes/:id', auth, (req, res) => {
  *       204:
  *        description: If note exists, note will be deleted
  */
-router.delete('users/:id/folders/:id/notes/:id', auth, (req, res) => {
-  logger.info('Accessing "DELETE users/:id/folders/:id/notes/:id"');
-  logger.info(`user: ${req.user}`);
-  res.send('You visited DELETE users/:id/folders/:id/notes/:id');
+router.delete('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
+  const { params: { folderId }, user: { id: userId } = {} } = req;
+  try {
+    const note = await db.Note.findByPk(folderId);
+    if (note.userId !== userId) {
+      throw Error('User is not the owner of the note');
+    }
+    if (note.foldeId !== folderId) {
+      throw Error('Note does not belong to provided folder');
+    }
+    await note.update({ isDeleted: true });
+    res.send(204);
+  } catch (error) {
+    logger.error(error);
+    res.send(204);
+  }
 });
 
 module.exports = router;
