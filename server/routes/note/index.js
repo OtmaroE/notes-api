@@ -81,6 +81,40 @@ router.post('/users/me/folders/:id/note', auth, async (req, res) => {
   logger.info(`user: ${req.user}`);
   res.send('You visited POST users/:id/folders/:id/notes');
 });
+/**
+ * @swagger
+ * /users/me/folders/{folderId}/notes:
+ *  get:
+ *    tags: ['Note']
+ *    description: Lists all notes of a given folder
+ *    security:
+ *     - BearerAuth: []
+ *    parameters:
+ *     - name: folderId
+ *       in: path
+ *       description: id of the folder
+ *       required: true
+ *       type: integer
+ *     produces:
+ *      - application/json
+ *     responses:
+ *       200:
+ *         description: Notes
+ *         content:
+ *          application/json
+ *            schema:
+ *             $ref: '#/definitions/Note'
+ */
+router.get('/users/me/folders/:id/notes/', auth, async (req, res) => {
+  const { user: { id: folderId } = {} } = req;
+  try {
+    const notes = await db.Note.findAll({ where: { folderId } });
+    res.send(notes, 200);
+  } catch (error) {
+    logger.error(error);
+    res.send([]);
+  }
+});
 
 /**
  * @swagger
@@ -116,7 +150,7 @@ router.get('/users/me/folders/:id/notes/:id', auth, async (req, res) => {
     res.send(notes, 200);
   } catch (error) {
     logger.error(error);
-    res.send([], 200);
+    res.send([]);
   }
   logger.info(`user: ${req.user}`);
   res.send('You visited GET users/:id/folders/:id/notes/:id');
