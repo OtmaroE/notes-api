@@ -95,15 +95,15 @@ router.post('/users/me/folders/:id/note', auth, async (req, res) => {
  *       description: id of the folder
  *       required: true
  *       type: integer
- *     produces:
+ *    produces:
  *      - application/json
- *     responses:
- *       200:
- *         description: Notes
- *         content:
- *          application/json
- *            schema:
- *             $ref: '#/definitions/Note'
+ *    responses:
+ *      200:
+ *        description: Notes
+ *        content:
+ *         application/json:
+ *           schema:
+ *            $ref: '#/definitions/Note'
  */
 router.get('/users/me/folders/:id/notes/', auth, async (req, res) => {
   const { user: { id: folderId } = {} } = req;
