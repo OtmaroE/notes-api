@@ -2,6 +2,47 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Start Server Locally",
+            "program": "${workspaceFolder}/server/index.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "envFile": "${workspaceFolder}/.env",
+            "outputCapture": "std"
+        },
+        {
+            "name": "Run migrations Locally",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "db:migrate"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "outputCapture": "std"
+        },
+        {
+            "name": "Run seeders Locally",
+            "type": "node",
+            "request": "launch",
+            "runtimeArgs": [
+                "run-script",
+                "db:seed"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "envFile": "${workspaceFolder}/.env",
+            "outputCapture": "std"
+        },
+        {
             "name": "Docker: Attach to Node",
             "type": "node",
             "request": "attach",
