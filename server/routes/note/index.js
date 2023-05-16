@@ -59,14 +59,14 @@ const router = express.Router();
  *            schema:
  *              $ref: '#/definitions/Note'
  */
-router.post('/users/me/folders/:id/note', auth, async (req, res) => {
+router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
   const { params: { folderId }, user: { id: userId } = {}, body } = req;
   try {
     const folder = await db.Folder.findByPk(folderId);
     if (!folder || (folder.userId !== userId)) {
       throw Error('Folder provided does not exist for user');
     }
-    const note = await db.Note.create({
+    const note = await db.Notes.create({
       name: body.name,
       content: body.content,
       folderId: folder.id,
@@ -78,8 +78,6 @@ router.post('/users/me/folders/:id/note', auth, async (req, res) => {
     logger.error(error);
     res.send({ message: `Failure to add note: ${error.message}` }, 400);
   }
-  logger.info(`user: ${req.user}`);
-  res.send('You visited POST users/:id/folders/:id/notes');
 });
 /**
  * @swagger
@@ -105,10 +103,10 @@ router.post('/users/me/folders/:id/note', auth, async (req, res) => {
  *           schema:
  *            $ref: '#/definitions/Note'
  */
-router.get('/users/me/folders/:id/notes/', auth, async (req, res) => {
+router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
   const { user: { id: folderId } = {} } = req;
   try {
-    const notes = await db.Note.findAll({ where: { folderId } });
+    const notes = await db.Notes.findAll({ where: { folderId } });
     res.send(notes, 200);
   } catch (error) {
     logger.error(error);
@@ -143,17 +141,19 @@ router.get('/users/me/folders/:id/notes/', auth, async (req, res) => {
  *            schema:
  *              $ref: '#/definitions/Note'
  */
-router.get('/users/me/folders/:id/notes/:id', auth, async (req, res) => {
-  const { user: { id: userId } = {} } = req;
+router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
+  const { params: { folderId, noteId }, user: { id: userId } = {} } = req;
   try {
-    const notes = await db.Note.findAll({ where: { userId, isDeleted: false } });
+    const folder = await db.Folder.findByPk(folderId);
+    if (!folder || folder.userId !== userId) {
+      throw Error('User is not the owner of the note');
+    }
+    const notes = await db.Notes.findByPk(noteId);
     res.send(notes, 200);
   } catch (error) {
     logger.error(error);
-    res.send([]);
+    res.send({ message: `Failure to read note: ${error.message}` }, 400);
   }
-  logger.info(`user: ${req.user}`);
-  res.send('You visited GET users/:id/folders/:id/notes/:id');
 });
 
 /**
@@ -200,7 +200,7 @@ router.get('/users/me/folders/:id/notes/:id', auth, async (req, res) => {
 router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
   const { params: { folderId }, user: { id: userId } = {}, body = {} } = req;
   try {
-    const note = await db.Note.findByPk(folderId);
+    const note = await db.Notes.findByPk(folderId);
     if (note.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
@@ -241,7 +241,7 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
 router.delete('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
   const { params: { folderId }, user: { id: userId } = {} } = req;
   try {
-    const note = await db.Note.findByPk(folderId);
+    const note = await db.Notes.findByPk(folderId);
     if (note.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
