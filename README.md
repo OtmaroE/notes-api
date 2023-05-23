@@ -24,6 +24,7 @@ If you wish, you can also deploy this API on a private server or build a UI for 
 # Run:
 
 ### Run manually
+A .vscode configuration has been pre-defined to facilitate development using VSCode. However, the following structions are software agnostic.  
 
 Install dependencies
 ```
