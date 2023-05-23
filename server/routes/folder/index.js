@@ -66,10 +66,10 @@ router.post('/users/me/folders', auth, async (req, res) => {
       userId: user.id,
       isDeleted: false,
     });
-    res.send(folderInstance, 201);
+    res.status(201).send(folderInstance);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -97,10 +97,10 @@ router.get('/users/me/folders', auth, async (req, res) => {
   const { user: { id: userId } = {} } = req;
   try {
     const folders = await db.Folder.findAll({ where: { userId, isDeleted: false } });
-    res.send(folders, 200);
+    res.status(200).send(folders);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -150,10 +150,10 @@ router.patch('/users/me/folders/:folderId', auth, async (req, res) => {
       throw Error('User not allowed to modify for this resource');
     }
     const updatedFolder = await folder.update({ name });
-    res.send(updatedFolder, 200);
+    res.status(200).send(updatedFolder);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -191,7 +191,7 @@ router.delete('/users/:userId/folders/:folderId', auth, async (req, res) => {
     res.send(204);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 

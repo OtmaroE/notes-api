@@ -73,10 +73,10 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
       userId,
       isDeleted: false,
     });
-    res.send(note, 201);
+    res.status(201).send(note);
   } catch (error) {
     logger.error(error);
-    res.send({ message: `Failure to add note: ${error.message}` }, 400);
+    res.status(400).send({ message: `Failure to add note: ${error.message}` });
   }
 });
 /**
@@ -107,10 +107,10 @@ router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
   const { user: { id: folderId } = {} } = req;
   try {
     const notes = await db.Notes.findAll({ where: { folderId } });
-    res.send(notes, 200);
+    res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
-    res.send([]);
+    res.status(400).send({ message: `Failure to retrieve note: ${error.message}` });
   }
 });
 
@@ -149,10 +149,10 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
       throw Error('User is not the owner of the note');
     }
     const notes = await db.Notes.findByPk(noteId);
-    res.send(notes, 200);
+    res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
-    res.send({ message: `Failure to read note: ${error.message}` }, 400);
+    res.status(400).send({ message: `Failure to read note: ${error.message}` });
   }
 });
 
@@ -204,10 +204,10 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
       name: body.name ? body.name : note.name,
       content: body.content ? body.content : note.content,
     });
-    res.send(updatedNote, 201);
+    res.status(201).send(updatedNote);
   } catch (error) {
     logger.error(error);
-    res.send({ message: `Failure to add note: ${error.message}` }, 400);
+    res.status(400).send({ message: `Failure to add note: ${error.message}` });
   }
 });
 
@@ -245,7 +245,7 @@ router.delete('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res
     }
     const note = await db.Notes.findByPk(noteId);
     const updatedNote = await note.update({ isDeleted: true });
-    res.send(updatedNote, 204);
+    res.status(204).send(updatedNote);
   } catch (error) {
     logger.error(error);
     res.send(204);

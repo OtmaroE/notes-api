@@ -74,17 +74,16 @@ router.post('/users', auth, async (req, res) => {
       isDeleted: false,
     });
     logger.info(`User created: ${userInstance.id}`);
-    res.send(
+    res.status(201).send(
       {
         id: userInstance.id,
         email: userInstance.email,
         userName: userInstance.userName,
-      },
-      201,
+      }
     );
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -119,10 +118,10 @@ router.post('/users/login', async (req, res) => {
     if (!user) throw Error('wrong email');
     verifyPassword(password, user.password);
     const token = createToken({ email: user.email, id: user.id });
-    res.send(token, 200);
+    res.status(200).send(token);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -174,7 +173,7 @@ router.patch('/users/:id', async (req, res) => {
     res.send(204);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -209,7 +208,7 @@ router.delete('/users/:id', auth, async (req, res) => {
     res.send(204);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
@@ -242,10 +241,10 @@ router.get('/users/:id', auth, async (req, res) => {
     logger.info(`Attempting to fetch user id: ${req.user.id}`);
     const dbUser = await db.User.findOne({ where: { id }, attributes: ['id', 'email', 'userName'] });
     delete dbUser.password;
-    res.send(dbUser);
+    res.status(200).send(dbUser);
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });
-    res.send({ message: error.message, errors: error.errors }, 400);
+    res.status(400).send({ message: error.message, errors: error.errors });
   }
 });
 
