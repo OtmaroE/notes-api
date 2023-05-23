@@ -162,7 +162,7 @@ router.patch('/users/:id', async (req, res) => {
   try {
     logger.info(`Verifying existence of user id ${id}`);
     const user = await db.User.findByPk(id);
-    if (!user) {
+    if (!user || user.isDeleted) {
       logger.error(`User ${id} not found on database`);
       throw Error('User does not exists');
     }
@@ -239,7 +239,7 @@ router.get('/users/:id', auth, async (req, res) => {
       throw Error('User not allowed to view for this resource');
     }
     logger.info(`Attempting to fetch user id: ${req.user.id}`);
-    const dbUser = await db.User.findOne({ where: { id }, attributes: ['id', 'email', 'userName'] });
+    const dbUser = await db.User.findOne({ where: { id, isDeleted: false }, attributes: ['id', 'email', 'userName'] });
     delete dbUser.password;
     res.status(200).send(dbUser);
   } catch (error) {

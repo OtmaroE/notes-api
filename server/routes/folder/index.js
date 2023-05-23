@@ -149,6 +149,9 @@ router.patch('/users/me/folders/:folderId', auth, async (req, res) => {
     if (folder.userId !== userId) {
       throw Error('User not allowed to modify for this resource');
     }
+    if (folder.isDeleted) {
+      res.status(404).send({ message: 'Folder is not in the system' });
+    }
     const updatedFolder = await folder.update({ name });
     res.status(200).send(updatedFolder);
   } catch (error) {

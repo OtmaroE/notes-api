@@ -106,7 +106,7 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
 router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
   const { user: { id: folderId } = {} } = req;
   try {
-    const notes = await db.Notes.findAll({ where: { folderId } });
+    const notes = await db.Notes.findAll({ where: { folderId, isDeleted: false } });
     res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
@@ -149,6 +149,9 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
       throw Error('User is not the owner of the note');
     }
     const notes = await db.Notes.findByPk(noteId);
+    if (notes.isDeleted) {
+      throw Error('Note is not in the system');
+    }
     res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
@@ -200,6 +203,9 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
       throw Error('User is not the owner of the note');
     }
     const note = await db.Notes.findByPk(noteId);
+    if (note.isDeleted) {
+      throw Error('Note is not in the system');
+    }
     const updatedNote = await note.update({
       name: body.name ? body.name : note.name,
       content: body.content ? body.content : note.content,
