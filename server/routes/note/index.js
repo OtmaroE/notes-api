@@ -159,17 +159,12 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
 /**
  * @swagger
  * /users/me/folders/{folderId}/notes/{noteId}:
- *   put:
+ *   patch:
  *     tags: ['Note']
  *     description: Update a note for a user
  *     security:
  *      - BearerAuth: []
  *     parameters:
- *      - name: userId
- *        in: path
- *        description: id of the user
- *        required: true
- *        type: integer
  *      - name: folderId
  *        in: path
  *        description: id of the folder
@@ -198,15 +193,13 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
  *              $ref: '#/definitions/Note'
  */
 router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
-  const { params: { folderId }, user: { id: userId } = {}, body = {} } = req;
+  const { params: { folderId, noteId }, user: { id: userId } = {}, body = {} } = req;
   try {
-    const note = await db.Notes.findByPk(folderId);
-    if (note.userId !== userId) {
+    const folder = await db.Folder.findByPk(folderId);
+    if (!folder || folder.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
-    if (note.foldeId !== folderId) {
-      throw Error('Note does not belong to provided folder');
-    }
+    const note = await db.Notes.findByPk(noteId);
     const updatedNote = await note.update({
       name: body.name ? body.name : note.name,
       content: body.content ? body.content : note.content,
@@ -232,6 +225,11 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
  *        description: id of the folder
  *        required: true
  *        type: integer
+ *      - name: noteId
+ *        in: path
+ *        description: id of the note
+ *        required: true
+ *        type: integer
  *     produces:
  *       - application/json
  *     responses:
@@ -239,17 +237,15 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
  *        description: If note exists, note will be deleted
  */
 router.delete('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) => {
-  const { params: { folderId }, user: { id: userId } = {} } = req;
+  const { params: { folderId, noteId }, user: { id: userId } = {} } = req;
   try {
-    const note = await db.Notes.findByPk(folderId);
-    if (note.userId !== userId) {
+    const folder = await db.Folder.findByPk(folderId);
+    if (!folder || folder.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
-    if (note.foldeId !== folderId) {
-      throw Error('Note does not belong to provided folder');
-    }
-    await note.update({ isDeleted: true });
-    res.send(204);
+    const note = await db.Notes.findByPk(noteId);
+    const updatedNote = await note.update({ isDeleted: true });
+    res.send(updatedNote, 204);
   } catch (error) {
     logger.error(error);
     res.send(204);
