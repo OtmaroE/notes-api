@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('user', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -9,6 +9,7 @@ module.exports = {
     userName: {
       type: Sequelize.STRING,
       allowNull: false,
+      field: 'user_name',
     },
     email: {
       type: Sequelize.STRING,
@@ -22,15 +23,18 @@ module.exports = {
     isDeleted: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
+      field: 'is_deleted',
     },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
+      field: 'created_at',
     },
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
+      field: 'updated_at',
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('Users'),
+  down: (queryInterface) => queryInterface.dropTable('user'),
 };

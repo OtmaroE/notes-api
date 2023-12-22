@@ -66,7 +66,7 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
     if (!folder || (folder.userId !== userId)) {
       throw Error('Folder provided does not exist for user');
     }
-    const note = await db.Notes.create({
+    const note = await db.Note.create({
       name: body.name,
       content: body.content,
       folderId: folder.id,
@@ -97,7 +97,7 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
  *      - application/json
  *    responses:
  *      200:
- *        description: Notes
+ *        description: Note
  *        content:
  *         application/json:
  *           schema:
@@ -106,7 +106,7 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
 router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
   const { user: { id: folderId } = {} } = req;
   try {
-    const notes = await db.Notes.findAll({ where: { folderId, isDeleted: false } });
+    const notes = await db.Note.findAll({ where: { folderId, isDeleted: false } });
     res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
@@ -148,11 +148,14 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
     if (!folder || folder.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
-    const notes = await db.Notes.findByPk(noteId);
-    if (notes.isDeleted) {
+    const note = await db.Note.findByPk(noteId);
+    console.log(note.folderId);
+    console.log(folderId);
+    console.log(note.folderId !== folder.id);
+    if (note.isDeleted || note.folderId !== folder.id) {
       throw Error('Note is not in the system');
     }
-    res.status(200).send(notes);
+    res.status(200).send(note);
   } catch (error) {
     logger.error(error);
     res.status(400).send({ message: `Failure to read note: ${error.message}` });
@@ -202,8 +205,8 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
     if (!folder || folder.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
-    const note = await db.Notes.findByPk(noteId);
-    if (note.isDeleted) {
+    const note = await db.Note.findByPk(noteId);
+    if (note.isDeleted || note.folderId !== folder.id) {
       throw Error('Note is not in the system');
     }
     const updatedNote = await note.update({
@@ -249,7 +252,7 @@ router.delete('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res
     if (!folder || folder.userId !== userId) {
       throw Error('User is not the owner of the note');
     }
-    const note = await db.Notes.findByPk(noteId);
+    const note = await db.Note.findByPk(noteId);
     const updatedNote = await note.update({ isDeleted: true });
     res.status(204).send(updatedNote);
   } catch (error) {

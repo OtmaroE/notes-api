@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Notes = sequelize.define('Notes', {
+  const Notes = sequelize.define('Note', {
     name: DataTypes.STRING,
     content: DataTypes.STRING,
     folderId: {
@@ -8,9 +8,24 @@ module.exports = (sequelize, DataTypes) => {
         model: sequelize.models.Folder,
         key: 'id',
       },
+      field: 'folder_id',
     },
-    isDeleted: DataTypes.BOOLEAN,
-  }, {});
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_deleted',
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at',
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at',
+    }
+  },
+  {
+    tableName: 'note'
+  });
   Notes.associate = () => {
     // associations can be defined here
   };

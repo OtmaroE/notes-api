@@ -9,9 +9,24 @@ module.exports = (sequelize, DataTypes) => {
         model: sequelize.models.User,
         key: 'id',
       },
+      field: 'user_id',
     },
-    isDeleted: DataTypes.BOOLEAN,
-  }, {});
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_deleted',
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      field: 'created_at',
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      field: 'updated_at',
+    }
+  },
+  {
+    tableName: 'folder'
+  });
   Folder.associate = () => {
     // associations can be defined here
   };

@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Folders', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('folder', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -14,25 +14,29 @@ module.exports = {
       type: Sequelize.INTEGER,
       references: {
         model: {
-          tableName: 'Users',
+          tableName: 'user',
           schema: 'public',
         },
         key: 'id',
       },
       allowNull: false,
+      field: 'user_id',
     },
     isDeleted: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
+      field: 'is_deleted',
     },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
+      field: 'created_at',
     },
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,
+      field: 'updated_at',
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('Folders'),
+  down: (queryInterface) => queryInterface.dropTable('folder'),
 };
