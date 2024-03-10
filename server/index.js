@@ -1,5 +1,6 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors');
 
 
 const logger = require('./services/logger');
@@ -20,6 +21,7 @@ const swaggerUiOptions = {
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, swaggerUiOptions));
 app.use('/', folderRoutes);
 app.use('/', swaggerDocs);
