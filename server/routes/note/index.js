@@ -104,7 +104,7 @@ router.post('/users/me/folders/:folderId/notes', auth, async (req, res) => {
  *            $ref: '#/definitions/Note'
  */
 router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
-  const { user: { id: folderId } = {} } = req;
+  const { params: { id: folderId } = {} } = req;
   try {
     const notes = await db.Note.findAll({ where: { folderId, isDeleted: false } });
     res.status(200).send(notes);

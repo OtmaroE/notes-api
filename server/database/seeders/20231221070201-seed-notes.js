@@ -66,7 +66,7 @@ module.exports = {
     },
     {
       name: 'This is #3 note example from folder 3',
-      'folder_id': 1,
+      'folder_id': 3,
       'user_id': 1,
       'is_deleted': false,
       'created_at': new Date(),
@@ -82,7 +82,7 @@ module.exports = {
     },
     {
       name: 'This is #2 note example from folder 4',
-      'folder_id': 1,
+      'folder_id': 4,
       'user_id': 1,
       'is_deleted': false,
       'created_at': new Date(),
