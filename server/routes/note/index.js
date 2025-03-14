@@ -195,7 +195,7 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
  *       - application/json
  *     responses:
  *       200:
- *         description: Note resource
+ *         description: Note resource updated
  *         content:
  *          application/json:
  *            schema:
@@ -216,7 +216,7 @@ router.patch('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res)
       name: body.name ? body.name : note.name,
       content: body.content ? body.content : note.content,
     });
-    res.status(201).send(updatedNote);
+    res.status(200).send(updatedNote);
   } catch (error) {
     logger.error(error);
     res.status(400).send({ message: `Failure to add note: ${error.message}` });
