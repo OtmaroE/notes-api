@@ -59,7 +59,8 @@ const router = express.Router();
  *            schema:
  *              $ref: '#/definitions/User'
  */
-router.post('/users', auth, async (req, res) => {
+router.post('/users', async (req, res) => {
+  // Note: This route is open for demo purposes
   const { email, password, userName } = req.body;
   try {
     emailValidator(email);
