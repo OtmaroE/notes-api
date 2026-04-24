@@ -1,5 +1,5 @@
 # reference: https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
-FROM node:16
+FROM node:24
 
 ARG NODE_ENV
 ARG SERVER_PORT
@@ -13,14 +13,11 @@ WORKDIR /user/src/app
 COPY package*.json ./
 COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
-# If you are building your code for production
-# RUN npm ci --only=production
-RUN npm install --development
+# Local/dev image: install exactly what's in the lockfile, including devDependencies.
+RUN npm ci
 
 # Bundle app source
 COPY . /user/src/app
 EXPOSE $SERVER_PORT
-
-RUN npm install -g nodemon
 
 ENTRYPOINT ["/entrypoint.sh"]

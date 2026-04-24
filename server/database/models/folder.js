@@ -1,32 +1,35 @@
 module.exports = (sequelize, DataTypes) => {
-  const Folder = sequelize.define('Folder', {
-    name: {
-      type: DataTypes.STRING,
-    },
-    userId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: sequelize.models.User,
-        key: 'id',
+  const Folder = sequelize.define(
+    'Folder',
+    {
+      name: {
+        type: DataTypes.STRING,
       },
-      field: 'user_id',
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'user',
+          key: 'id',
+        },
+        field: 'user_id',
+      },
+      isDeleted: {
+        type: DataTypes.BOOLEAN,
+        field: 'is_deleted',
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
-    isDeleted: {
-      type: DataTypes.BOOLEAN,
-      field: 'is_deleted',
+    {
+      tableName: 'folder',
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      field: 'created_at',
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      field: 'updated_at',
-    }
-  },
-  {
-    tableName: 'folder'
-  });
+  );
   Folder.associate = () => {
     // associations can be defined here
   };

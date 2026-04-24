@@ -80,7 +80,7 @@ router.post('/users', async (req, res) => {
         id: userInstance.id,
         email: userInstance.email,
         userName: userInstance.userName,
-      }
+      },
     );
   } catch (error) {
     logger.error({ message: error.message, errors: error.errors });

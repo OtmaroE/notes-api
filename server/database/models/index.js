@@ -21,7 +21,10 @@ fs
   .readdirSync(__dirname)
   .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
-    const model = sequelize.import(path.join(__dirname, file));
+    // Model files are discovered dynamically from this directory at startup.
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const modelFactory = require(path.join(__dirname, file));
+    const model = modelFactory(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });
 

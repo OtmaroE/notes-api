@@ -109,7 +109,7 @@ router.get('/users/me/folders/:id/notes', auth, async (req, res) => {
     const notes = await db.Note.findAll({
       where: { folderId, isDeleted: false },
       attributes: ['id', 'name', 'folderId'],
-     });
+    });
     res.status(200).send(notes);
   } catch (error) {
     logger.error(error);
@@ -152,9 +152,6 @@ router.get('/users/me/folders/:folderId/notes/:noteId', auth, async (req, res) =
       throw Error('User is not the owner of the note');
     }
     const note = await db.Note.findByPk(noteId);
-    console.log(note.folderId);
-    console.log(folderId);
-    console.log(note.folderId !== folder.id);
     if (note.isDeleted || note.folderId !== folder.id) {
       throw Error('Note is not in the system');
     }

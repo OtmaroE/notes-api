@@ -2,7 +2,6 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const cors = require('cors');
 
-
 const logger = require('./services/logger');
 const folderRoutes = require('./routes/folder');
 const swaggerDocs = require('./routes/docs');

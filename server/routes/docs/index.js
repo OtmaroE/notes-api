@@ -13,17 +13,16 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'Note taking API',
   },
-  host: `localhost:${PORT}`,
-  basePath: '/',
-  securityDefinitions: {
-    test: {},
-  },
+  servers: [
+    {
+      url: `http://localhost:${PORT}`,
+    },
+  ],
 };
 
 // options for the swagger docs
 const options = {
-  // import swaggerDefinitions
-  swaggerDefinition,
+  definition: swaggerDefinition,
   // path to the API docs
   apis: [
     './server/routes/folder/*.js',
@@ -41,6 +40,5 @@ router.get('/swagger.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
-
 
 module.exports = router;
