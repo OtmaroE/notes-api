@@ -3,6 +3,10 @@
     "configurations": [
         {
             "name": "Start Server Locally",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "--watch"
+            ],
             "program": "${workspaceFolder}/server/index.js",
             "request": "launch",
             "skipFiles": [
