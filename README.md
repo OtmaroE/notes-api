@@ -15,8 +15,7 @@ If you wish, you can also deploy this API on a private server or build a UI for 
 
 # Stack
 - Node.js.
-  - Version 16.4.2 is used as it is current LTS.
-  - Node 16.4.2 comes with npm version 7.18.1
+  - Version 24.x is the expected local development runtime.
 - Postgres.
   - Version 10, the oldest version with pending minor releases as of 2022.
 - Docker
@@ -24,19 +23,19 @@ If you wish, you can also deploy this API on a private server or build a UI for 
 # Run:
 
 ### Run manually
-A .vscode configuration has been pre-defined to facilitate development using VSCode. However, the following structions are software agnostic.  
+A `.vscode` configuration has been pre-defined to facilitate development using VS Code. However, the following instructions are software agnostic.
 
 Install dependencies
 ```
-npm install 
+npm install
 ```
 Start server
 ```
-node sever
+node server/index.js
 ```
 Start server - Development
 ```
-nodemon server/
+npm run dev
 ```
 
 #### Migrate the database

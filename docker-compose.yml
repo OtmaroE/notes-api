@@ -18,8 +18,9 @@ services:
     links:
       - postgres
     command:
-      - nodemon
-      - "--inspect=0.0.0.0"
+      - node
+      - "--watch"
+      - "--inspect=0.0.0.0:${DEBUG_SERVER_PORT}"
       - "./server/index.js"
   postgres:
     container_name: postgres

@@ -10,7 +10,7 @@
     "db:migrate": "cd server/database && npx sequelize-cli db:migrate",
     "db:downgrate": "cd server/database && npx sequelize-cli db:migrate:undo:all",
     "db:seed": "cd server/database && npx sequelize-cli db:seed:all",
-    "dev": "nodemon --legacy-watch server server/index.js",
+    "dev": "node --watch server/index.js",
     "lint": "eslint server"
   },
   "repository": {
@@ -43,12 +43,9 @@
     "winston": "^3.19.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^2.1.4",
-    "@eslint/js": "^8.57.1",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
     "eslint-plugin-import": "^2.32.0",
-    "globals": "^16.4.0",
-    "nodemon": "^3.1.14"
+    "globals": "^16.4.0"
   }
 }
