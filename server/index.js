@@ -22,6 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(null, swaggerUiOptions));
+app.get('/', (req, res) => res.redirect('/api-docs'));
 app.use('/', folderRoutes);
 app.use('/', swaggerDocs);
 app.use('/', noteRoutes);
